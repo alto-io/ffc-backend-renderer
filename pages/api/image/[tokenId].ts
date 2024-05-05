@@ -203,7 +203,17 @@ const combineImages = async (
 
   const renderOraImage = async (req: NextApiRequest, res: NextApiResponse) => {
     const zipPath = path.join(process.cwd(), 'assets', 'arcadians.ora');
-    const { tokenId } = req.query;
+    const { 
+      tokenId,
+      lefthand,
+      righthand,
+      head,
+      mouth,
+      eyes,
+      top,
+      bottom,
+      skin
+     } = req.query;
 
     const INFURA_KEY = process.env.INFURA_KEY
     const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS
@@ -222,7 +232,18 @@ const combineImages = async (
 
     // Fetch token metadata from tokenURI
     const metadata = await fetchTokenMetadata(tokenURI);
-    const attributes = metadata?.attributes;
+    // const attributes = metadata?.attributes;
+    const attributes = [
+      { trait_type: "Left Hand", value: lefthand },
+      { trait_type: "Right Hand", value: righthand },
+      { trait_type: "Head", value: head },
+      { trait_type: "Mouth", value: mouth },
+      { trait_type: "Eyes", value: eyes },
+      { trait_type: "Top", value: top },
+      { trait_type: "Bottom", value: bottom },
+      { trait_type: "Skin", value: skin },
+    ]
+
 
     if (!metadata) {
       return res.status(500).json({ error: "Failed to fetch token metadata" });
